@@ -22,7 +22,7 @@ export class Students {
     Father_Name: string
 
     @Column()
-    Parent_Number: string
+    Parent_Number: string;
 
     @Column()
     Address: string
