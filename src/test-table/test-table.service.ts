@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTestTableDto } from './dto/create-test-table.dto';
-import { UpdateTestTableDto } from './dto/update-test-table.dto';
+import { CreateTestDto} from './dto/create-test-table.dto';
+
 
 @Injectable()
 export class TestTableService {
-  create(createTestTableDto: CreateTestTableDto) {
+  create(createTestTableDto: CreateTestDto) {
     return 'This action adds a new testTable';
   }
 
@@ -16,7 +16,7 @@ export class TestTableService {
     return `This action returns a #${id} testTable`;
   }
 
-  update(id: number, updateTestTableDto: UpdateTestTableDto) {
+  update(id: number, updateTestTableDto: Partial<CreateTestDto>) {
     return `This action updates a #${id} testTable`;
   }
 

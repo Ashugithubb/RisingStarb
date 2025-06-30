@@ -1,5 +1,5 @@
 import { StudentFees } from "src/fees/entities/fee.entity";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Url } from "url";
 import * as bcrypt from 'bcrypt';
 import { StudentTest } from "src/student-tests/entities/student-test.entity";

@@ -3,40 +3,45 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Students } from "./entities/student.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
+import { LoginDto } from "./dto/login.dto";
 
 @Injectable()
-export class StudentService{
-    constructor(@InjectRepository(Students) private studentRepo:Repository<Students>){}
-    async findOne(Regid:number){
-        const found=  await this.studentRepo.findOne({
-            where:{
-                Regid,
-            }
-        })
-        if(!found){
-            throw new NotFoundException();
+export class StudentService {
+    constructor(@InjectRepository(Students) private studentRepo: Repository<Students>) { }
+
+
+    async findOne(Regid: number, withPassword = false) {
+        if (withPassword) {
+            return await this.studentRepo.findOne({
+                where: { Regid },
+                select: ['Regid', 'password', 'Name', 'School'],
+            });
         }
-        return found;
-    }
-    async findAll(){   //Promise<Student[]>
-         return await this.studentRepo.find();
+        return await this.studentRepo.findOne({ where: { Regid } });
     }
 
-    async create(dto:CreateStudentDto){
-       return await this.studentRepo.save(dto);
+
+    async findAll() {   //Promise<Student[]>
+        return await this.studentRepo.find();
     }
 
-    async update(id:number,updateDto:Partial<CreateStudentDto>){
+    async create(dto: CreateStudentDto) {
+        const student = this.studentRepo.create(dto);
+        return await this.studentRepo.save(student);
+    }
+
+
+    async update(id: number, updateDto: Partial<CreateStudentDto>) {
         const result = await this.studentRepo.update(id, updateDto);
-    
-    if (result.affected === 0) {
-        throw new NotFoundException(`Student with ID ${id} not found`);
+
+        if (result.affected === 0) {
+            throw new NotFoundException(`Student with ID ${id} not found`);
+        }
+
+        return "updated";
     }
 
-    return "updated";
-    }
-
-    async delete(id:number){
+    async delete(id: number) {
         return this.studentRepo.delete(id);
     }
 }

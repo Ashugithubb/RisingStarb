@@ -1,19 +1,23 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Request, UseGuards } from "@nestjs/common";
 
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { StudentService } from "./student.service";
+import { LoginDto } from "./dto/login.dto";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 
 
 @Controller('student')
 export class StudentController{
     constructor(private studentService:StudentService){}
+
     @Get('all')
     findAll(){
         return this.studentService.findAll();
     }
-    @Get(':id')
-    findOne(@Param('id',ParseIntPipe)id){
-        return this.studentService.findOne(id);
+    @UseGuards(JwtAuthGuard)
+    @Get(":id")
+    findOne(@Request() req){
+        return this.studentService.findOne(req.user.id);
     }
     @Post('add')
     create(@Body() dto:CreateStudentDto){
