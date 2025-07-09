@@ -8,26 +8,27 @@ import { Students } from 'src/student/entities/student.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { StudentModule } from 'src/student/student.module';
 
 @Module({
-  imports: [
+  imports: [ StudentModule,
     TypeOrmModule.forFeature([Students]),
     JwtModule.registerAsync({
-  imports: [ConfigModule],
-  useFactory: async (config: ConfigService) => {
-    const secret = config.get<string>('JWT_SECRET');
-  
-    return {
-      secret,
-      signOptions: { expiresIn: config.get<string>('JWT_EXPIRE_IN') || '1d' },
-    };
-  },
-  inject: [ConfigService],
-}),
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => {
+        const secret = config.get<string>('JWT_SECRET');
+
+        return {
+          secret,
+          signOptions: { expiresIn: config.get<string>('JWT_EXPIRE_IN') || '1d' },
+        };
+      },
+      inject: [ConfigService],
+    }),
 
   ],
   controllers: [AuthController],
-  providers: [AuthService, StudentService, LocalStrategy,JwtStrategy],
-  exports: [JwtModule], 
+  providers: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [JwtModule],
 })
 export class AuthModule { }

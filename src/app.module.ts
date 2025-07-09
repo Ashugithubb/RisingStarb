@@ -13,6 +13,7 @@ import { OtpService } from './otp/otp.service';
 import { OtpController } from './otp/otp.controller';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
+import { CloudnaryService } from './cloudnary/cloudnary.service';
 
 
 
@@ -20,7 +21,7 @@ import { MailModule } from './mail/mail.module';
   imports: [ ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(pgConfig),StudentModule, AuthModule, FeesModule, 
     TestTableModule, QuestionsModule, AnswersModule, StudentTestsModule,AuthModule, MailModule],
-  providers: [OtpService, MailService],
+  providers: [OtpService, MailService, CloudnaryService],
   controllers: [OtpController],
 })
 export class AppModule {}

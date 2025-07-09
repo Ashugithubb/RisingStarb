@@ -4,10 +4,12 @@ import { Repository } from "typeorm";
 import { Students } from "./entities/student.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { LoginDto } from "./dto/login.dto";
+import { CloudnaryService } from "src/cloudnary/cloudnary.service";
 
 @Injectable()
 export class StudentService {
-    constructor(@InjectRepository(Students) private studentRepo: Repository<Students>) { }
+    constructor(@InjectRepository(Students) private studentRepo: Repository<Students>,
+                    private readonly cloudService:CloudnaryService  ) { }
 
 
     async findOne(Regid: number, withPassword = false) {
@@ -44,4 +46,9 @@ export class StudentService {
     async delete(id: number) {
         return this.studentRepo.delete(id);
     }
+
+    async uploadProfileImage(file: Express.Multer.File){
+        return await this.cloudService.uploadFileFromPath(file.path)
+    }
+    
 }
